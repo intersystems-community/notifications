@@ -1,2 +1,2 @@
-# notofications
-Simple REST API to provide notofocations
+# notifications
+Simple REST API to provide notifocations
