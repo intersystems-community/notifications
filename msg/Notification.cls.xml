@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="msg.Notification">
+<Description>
+Уведомление пользователя</Description>
+<Super>%Persistent</Super>
+<TimeCreated>64232,53849.515135</TimeCreated>
+
+<Property name="start">
+<Description>
+Начало актуальности</Description>
+<Type>%TimeStamp</Type>
+</Property>
+
+<Property name="end">
+<Description>
+Конец актуальности</Description>
+<Type>%TimeStamp</Type>
+</Property>
+
+<Property name="workStart">
+<Description>
+Начало работ</Description>
+<Type>%TimeStamp</Type>
+</Property>
+
+<Property name="workEnd">
+<Description>
+Конец работ</Description>
+<Type>%TimeStamp</Type>
+</Property>
+
+<Property name="text">
+<Description>
+Сообщение</Description>
+<Type>%String</Type>
+<Parameter name="MAXLEN"/>
+</Property>
+
+<Property name="project">
+<Type>%String</Type>
+</Property>
+
+<Property name="title">
+<Type>%String</Type>
+</Property>
+
+<Method name="getActual">
+<Description>
+Получить список актуальных уведомлений</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Array</ReturnType>
+<Implementation><![CDATA[
+	set sql = "SELECT Id FROM msg.Notification WHERE CURRENT_TIMESTAMP BETWEEN start AND ""end"""
+	set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql)
+	if resultSet.%SQLCODE '= 0 {
+		set status = $$$ERROR($$$SQLError, resultSet.%SQLCODE, resultSet.%Message)
+	}
+
+	set arr = []
+	while resultSet.%Next() {
+		set obj = ..getOne(resultSet.Id)
+		do arr.$push(obj)
+	}
+	return arr
+]]></Implementation>
+</Method>
+
+<Method name="getOne">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id</FormalSpec>
+<ReturnType>%Object</ReturnType>
+<Implementation><![CDATA[
+    set obj = {}
+    set msg = ..%OpenId(id)
+    set obj."_id" = id
+    set obj.start = ##class(%TimeStamp).LogicalToXSD(msg.start)
+    set obj.end = ##class(%TimeStamp).LogicalToXSD(msg.end)
+    set obj.workStart = ##class(%TimeStamp).LogicalToXSD(msg.workStart)
+    set obj.workEnd = ##class(%TimeStamp).LogicalToXSD(msg.workEnd)
+    set obj.project = msg.project
+    set obj.text = msg.text
+    set obj.title = msg.title
+    return obj
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^msg.NotificationD</DataLocation>
+<DefaultData>NotificationDefaultData</DefaultData>
+<IdLocation>^msg.NotificationD</IdLocation>
+<IndexLocation>^msg.NotificationI</IndexLocation>
+<StreamLocation>^msg.NotificationS</StreamLocation>
+<Data name="NotificationDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>start</Value>
+</Value>
+<Value name="3">
+<Value>end</Value>
+</Value>
+<Value name="4">
+<Value>workStart</Value>
+</Value>
+<Value name="5">
+<Value>workEnd</Value>
+</Value>
+<Value name="6">
+<Value>text</Value>
+</Value>
+<Value name="7">
+<Value>project</Value>
+</Value>
+<Value name="8">
+<Value>title</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>
