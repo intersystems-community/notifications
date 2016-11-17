@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="Cache" version="25">
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2016.1 (Build 656U)" ts="2016-11-17 12:11:10">
 <Class name="msg.Notification">
 <Description>
 Уведомление пользователя</Description>
 <Super>%Persistent</Super>
+<TimeChanged>64239,43861.51646</TimeChanged>
 <TimeCreated>64232,53849.515135</TimeCreated>
 
 <Property name="start">
@@ -54,7 +55,7 @@
 <Implementation><![CDATA[
 	set sql = "SELECT Id FROM msg.Notification WHERE CURRENT_TIMESTAMP BETWEEN start AND ""end"""
 	if project'="" {
-		set sql = sql _ " AND project = ?"
+		set sql = sql _ " AND (project = ? OR project = 'all'"
 		set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, project)
 	} else {
 		set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql)
