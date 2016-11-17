@@ -53,9 +53,9 @@
 <FormalSpec>project=""</FormalSpec>
 <ReturnType>%Array</ReturnType>
 <Implementation><![CDATA[
-	set sql = "SELECT Id FROM msg.Notification WHERE CURRENT_TIMESTAMP BETWEEN start AND ""end"""
+	set sql = "SELECT Id FROM msg.Notification WHERE (CURRENT_TIMESTAMP BETWEEN start AND ""end"")"
 	if project'="" {
-		set sql = sql _ " AND (project = ? OR project = 'all'"
+		set sql = sql _ " AND (project = ? OR project = 'all')"
 		set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, project)
 	} else {
 		set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql)
