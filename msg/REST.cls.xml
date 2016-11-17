@@ -9,15 +9,17 @@
 <Data><![CDATA[
 <Routes>
 <Route Url="/notifications" Method="GET" Call="getNotifications"/>
+<Route Url="/notifications/:project" Method="GET" Call="getNotifications"/>
 </Routes>
 ]]></Data>
 </XData>
 
 <Method name="getNotifications">
 <ClassMethod>1</ClassMethod>
+<FormalSpec>project=""</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	set arr = $classmethod("msg.Notification", "getActual")
+	set arr = $classmethod("msg.Notification", "getActual", project)
 	write arr.$toJSON()
 	return $$$OK
 ]]></Implementation>

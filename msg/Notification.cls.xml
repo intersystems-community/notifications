@@ -49,10 +49,17 @@
 <Description>
 Получить список актуальных уведомлений</Description>
 <ClassMethod>1</ClassMethod>
+<FormalSpec>project=""</FormalSpec>
 <ReturnType>%Array</ReturnType>
 <Implementation><![CDATA[
 	set sql = "SELECT Id FROM msg.Notification WHERE CURRENT_TIMESTAMP BETWEEN start AND ""end"""
-	set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql)
+	if project'="" {
+		set sql = sql _ " AND project = ?"
+		set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, project)
+	} else {
+		set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql)
+	}
+	
 	if resultSet.%SQLCODE '= 0 {
 		set status = $$$ERROR($$$SQLError, resultSet.%SQLCODE, resultSet.%Message)
 	}
