@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2016.1 (Build 656U)" ts="2016-11-17 12:11:10">
+<Export generator="Cache" version="25">
 <Class name="msg.Notification">
 <Description>
 Уведомление пользователя</Description>
@@ -39,10 +39,14 @@
 </Property>
 
 <Property name="project">
+<Description>
+Проект</Description>
 <Type>%String</Type>
 </Property>
 
 <Property name="title">
+<Description>
+Заголовок</Description>
 <Type>%String</Type>
 </Property>
 
@@ -90,6 +94,26 @@
     set obj.text = msg.text
     set obj.title = msg.title
     return obj
+]]></Implementation>
+</Method>
+
+<Method name="add">
+<Description>
+Add one notification
+write $System.Status.GetErrorText(##class(msg.Notification).add("2016-12-06 00:00:00", "2016-12-07 00:00:00", "2016-12-06 23:00:00", "2016-12-07 00:00:00", "КИП МВК недоступна в связи с проведением работ", "all", "КИП МВК недоступна"))</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>start:%TimeStamp,end:%TimeStamp,workStart:%TimeStamp,workEnd:%TimeStamp,text,project,title</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set obj = ..%New()
+	set obj.start = start
+	set obj.end = end
+	set obj.workStart = workStart
+	set obj.workEnd = workEnd
+	set obj.text = text
+	set obj.project = project
+	set obj.title = title
+	return obj.%Save()
 ]]></Implementation>
 </Method>
 
